@@ -85,7 +85,7 @@
 
   <script>
     (function() {
-      fetch('https://hire-potentially-surprise-dozens.trycloudflare.com/v1/region')
+      fetch('https://api.genz.ltd/v1/region')
         .then(function(r) { return r.ok ? r.json() : Promise.reject(r); })
         .then(function(data) {
           var p = data.pricing || {};
