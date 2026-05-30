@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tatha 跨境业务方案</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<style>
+  :root {
+    --bg: #0c0c10;
+    --surface: #141419;
+    --surface2: #1c1c24;
+    --border: #2a2a38;
+    --text: #e8e8f0;
+    --text2: #a0a0b4;
+    --text3: #6b6b80;
+    --accent: #6366f1;
+    --accent2: #818cf8;
+    --accent-bg: rgba(99,102,241,0.12);
+    --teal: #2dd4bf;
+    --teal-bg: rgba(45,212,191,0.12);
+    --coral: #f97316;
+    --coral-bg: rgba(249,115,22,0.12);
+    --red: #ef4444;
+    --red-bg: rgba(239,68,68,0.12);
+    --green: #22c55e;
+    --green-bg: rgba(34,197,94,0.12);
+    --amber: #f59e0b;
+    --amber-bg: rgba(245,158,11,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 14px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; letter-spacing: -0.02em; }
+  .subtitle { color: var(--text2); font-size: 0.95rem; margin-bottom: 2rem; }
+  .meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--text3); }
+  .meta-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  h2 {
+    font-size: 1.3rem; font-weight: 600; margin: 2.5rem 0 1rem;
+    padding-left: 0.75rem; border-left: 3px solid var(--accent);
+  }
+  h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--text2); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+
+  .badge {
+    display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.03em;
+  }
+  .badge-accent { background: var(--accent-bg); color: var(--accent2); }
+  .badge-teal { background: var(--teal-bg); color: var(--teal); }
+  .badge-coral { background: var(--coral-bg); color: var(--coral); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th { background: var(--surface2); color: var(--text2); font-weight: 500; text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
+  td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover td { background: rgba(99,102,241,0.04); }
+
+  .highlight { background: var(--accent-bg); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent2); font-weight: 500; }
+  .tag-list { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  .phase-row { display: grid; grid-template-columns: 60px 1fr 1fr 1fr; gap: 1rem; align-items: start; margin-bottom: 1.5rem; }
+  .phase-num {
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem;
+  }
+  .phase-content h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .phase-content p { font-size: 0.8rem; color: var(--text2); line-height: 1.6; }
+  .phase-detail { font-size: 0.78rem; color: var(--text3); }
+  .phase-detail li { margin-bottom: 0.25rem; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin: 1rem 0; }
+  .kpi-card { background: var(--surface2); border-radius: 8px; padding: 0.75rem; text-align: center; }
+  .kpi-value { font-size: 1.5rem; font-weight: 700; }
+  .kpi-label { font-size: 0.7rem; color: var(--text3); margin-top: 0.15rem; }
+
+  .flow-steps { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+  .flow-step {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.5rem 0.75rem; font-size: 0.78rem;
+  }
+  .flow-arrow { color: var(--text3); font-size: 0.8rem; }
+
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+  .toc-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.75rem; color: var(--text2); }
+  .toc a { color: var(--accent2); text-decoration: none; font-size: 0.85rem; display: block; padding: 0.2rem 0; }
+  .toc a:hover { text-decoration: underline; }
+  .toc ol { padding-left: 1.25rem; }
+
+  .warn-box { background: var(--red-bg); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 0.75rem 1rem; margin: 1rem 0; font-size: 0.85rem; }
+  .warn-box strong { color: var(--red); }
+  .tip-box { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; padding: 0.75rem 1rem; margin: 1rem 0; font-size: 0.85rem; }
+  .tip-box strong { color: var(--green); }
+  .info-box { background: var(--accent-bg); border: 1px solid rgba(99,102,241,0.3); border-radius: 8px; padding: 0.75rem 1rem; margin: 1rem 0; font-size: 0.85rem; }
+
+  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+  .chart-title { font-size: 0.8rem; color: var(--text2); margin-bottom: 0.5rem; font-weight: 500; }
+
+  @media (max-width: 640px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .phase-row { grid-template-columns: 1fr; gap: 0.5rem; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Tatha Cross-Border Strategy</h1>
+  <p class="subtitle">AI Job-Match & Career Companion — International Expansion Blueprint</p>
+
+  <div class="meta">
+    <div class="meta-item"><span class="meta-dot" style="background:var(--accent)"></span>Version 1.1</div>
+    <div class="meta-item"><span class="meta-dot" style="background:var(--teal)"></span>2026-05-30</div>
+    <div class="meta-item"><span class="meta-dot" style="background:var(--coral)"></span>Confidential</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
+    <ol>
+      <li><a href="#s1">Current State Audit</a></li>
+      <li><a href="#s2">Target Market Analysis</a></li>
+      <li><a href="#s3">Internationalization Roadmap</a></li>
+      <li><a href="#s4">Payment Architecture</a></li>
+      <li><a href="#s5">Localization Strategy</a></li>
+      <li><a href="#s6">Infrastructure & Delivery</a></li>
+      <li><a href="#s7">Compliance & Legal</a></li>
+      <li><a href="#s8">Platform Decision: Shopify vs SaaS-Native</a></li>
+      <li><a href="#s9">Cross-Border E-Commerce Extension</a></li>
+      <li><a href="#s10">Go-to-Market Phasing</a></li>
+      <li><a href="#s11">Cost Model & Pricing</a></li>
+      <li><a href="#s12">Risk Matrix</a></li>
+      <li><a href="#s13">Immediate Action Items</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 1: Current State -->
+  <h2 id="s1">1. Current State Audit</h2>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-value" style="color:var(--accent)">4</div><div class="kpi-label">HTML files</div></div>
+    <div class="kpi-card"><div class="kpi-value" style="color:var(--teal)">0</div><div class="kpi-label">i18n framework</div></div>
+    <div class="kpi-card"><div class="kpi-value" style="color:var(--coral)">0</div><div class="kpi-label">Payment gateway</div></div>
+    <div class="kpi-card"><div class="kpi-value" style="color:var(--amber)">1</div><div class="kpi-label">API region endpoint</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Dimension</th><th>Current Status</th><th>Gap</th></tr></thead>
+    <tbody>
+      <tr><td>Frontend</td><td>Static HTML/JS, no framework</td><td class="badge badge-red">No SPA routing, no component system</td></tr>
+      <tr><td>Localization</td><td>Hardcoded Chinese text</td><td class="badge badge-red">Zero i18n support</td></tr>
+      <tr><td>Auth</td><td>Demo mode (format check only)</td><td class="badge badge-coral">No real user system</td></tr>
+      <tr><td>Payment</td><td>Subscription page exists, no gateway</td><td class="badge badge-red">No Stripe / PayPal integration</td></tr>
+      <tr><td>API Backend</td><td>Cloudflare Tunnel (ephemeral URL)</td><td class="badge badge-coral">Unstable endpoint, no CDN</td></tr>
+      <tr><td>Deployment</td><td>Vercel (static)</td><td class="badge badge-amber">No SSR, no Edge Functions</td></tr>
+      <tr><td>Region Pricing</td><td>Basic /v1/region endpoint</td><td class="badge badge-green">Good starting point</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Key insight:</strong> Tatha has a working MVP with region-aware pricing already built. The gap is primarily in <span class="highlight">i18n infrastructure</span>, <span class="highlight">payment integration</span>, and <span class="highlight">production-ready auth</span>. The codebase is small enough (<400 lines of JS) that refactoring to a framework (Next.js) is feasible and recommended.
+  </div>
+
+  <!-- Section 2: Target Market -->
+  <h2 id="s2">2. Target Market Analysis</h2>
+
+  <div class="chart-wrap">
+    <div class="chart-title">AI Career Tools — TAM by Region (2026 est.)</div>
+    <canvas id="chart-tam" height="260" role="img" aria-label="Bar chart of market sizes"></canvas>
+  </div>
+
+  <h3>Market Priority Matrix</h3>
+  <table>
+    <thead><tr><th>Priority</th><th>Market</th><th>Why</th><th>Language</th><th>Payment</th><th>Compliance</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="badge badge-green">P0</td>
+        <td><strong>North America</strong></td>
+        <td> Largest AI SaaS market, high willingness to pay, English-first</td>
+        <td>English</td>
+        <td>Stripe, PayPal</td>
+        <td>CCPA, SOC 2</td>
+      </tr>
+      <tr>
+        <td class="badge badge-teal">P1</td>
+        <td><strong>Japan</strong></td>
+        <td> Premium job market, low AI competition, high per-user value</td>
+        <td>Japanese</td>
+        <td>Stripe JP</td>
+        <td>APPI</td>
+      </tr>
+      <tr>
+        <td class="badge badge-teal">P1</td>
+        <td><strong>Southeast Asia</strong></td>
+        <td> Growing middle class, mobile-first, younger demographic</td>
+        <td>EN/TH/VI</td>
+        <td>GrabPay, GCash</td>
+        <td>PDPD (TH/PH)</td>
+      </tr>
+      <tr>
+        <td class="badge badge-amber">P2</td>
+        <td><strong>Europe (UK/DE)</strong></td>
+        <td> Large market, but GDPR complexity + multilingual overhead</td>
+        <td>EN/DE</td>
+        <td>Stripe, Klarna</td>
+        <td>GDPR, PSD2</td>
+      </tr>
+      <tr>
+        <td class="badge badge-amber">P2</td>
+        <td><strong>India</strong></td>
+        <td> Massive TAM, but price sensitivity is extreme</td>
+        <td>English / HI</td>
+        <td>UPI, Razorpay</td>
+        <td>DPDPA 2023</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>Recommendation:</strong> Start with <span class="highlight">English-only + North America</span> to validate PMF before expanding. Japan as P1 because Japanese consumers pay premium for quality AI tools and competition is lower. Southeast Asia is P1 for volume but requires local payment methods.
+  </div>
+
+  <!-- Section 3: i18n Roadmap -->
+  <h2 id="s3">3. Internationalization Roadmap</h2>
+
+  <h3>3.1 Architecture Decision: Migrate to Next.js</h3>
+  <p>Current static HTML cannot scale to multi-language, multi-region deployment. Next.js with App Router provides:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="badge badge-accent">Next.js App Router</span>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--text2);">
+        Built-in i18n routing (<code>/en/...</code>, <code>/ja/...</code>), SSR for SEO, Edge Functions for region detection, middleware for locale redirect.
+      </p>
+    </div>
+    <div class="card">
+      <span class="badge badge-teal">next-intl</span>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--text2);">
+        Mature i18n library for Next.js. Supports message catalogs per locale, server/client components, ICU message format for plurals/gender.
+      </p>
+    </div>
+    <div class="card">
+      <span class="badge badge-coral">Vercel Edge</span>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--text2);">
+        Geo-based edge functions for region detection (IP → currency/pricing), already on Vercel so zero migration cost for hosting.
+      </p>
+    </div>
+  </div>
+
+  <h3>3.2 i18n Layer Architecture</h3>
+
+  <div class="flow-steps">
+    <div class="flow-step" style="border-color:var(--accent);">
+      <strong>1. URL Locale</strong><br>
+      <span style="color:var(--text3)">/en, /ja, /zh-CN</span>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-color:var(--teal);">
+      <strong>2. Accept-Language</strong><br>
+      <span style="color:var(--text3)">Browser fallback</span>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-color:var(--coral);">
+      <strong>3. Geo IP Region</strong><br>
+      <span style="color:var(--text3)">Currency + pricing</span>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step" style="border-color:var(--green);">
+      <strong>4. User Preference</strong><br>
+      <span style="color:var(--text3)">Stored in profile</span>
+    </div>
+  </div>
+
+  <h3>3.3 Locale Matrix</h3>
+  <table>
+    <thead><tr><th>Locale Code</th><th>Language</th><th>Target Market</th><th>Rights → Left</th><th>Plural Rules</th></tr></thead>
+    <tbody>
+      <tr><td><code>en</code></td><td>English</td><td>US, UK, AU, SG, PH</td><td>No</td><td>2 forms (one/other)</td></tr>
+      <tr><td><code>ja</code></td><td>Japanese</td><td>Japan</td><td>No</td><td>1 form (no plural)</td></tr>
+      <tr><td><code>zh-CN</code></td><td>Simplified Chinese</td><td>China mainland</td><td>No</td><td>1 form (no plural)</td></tr>
+      <tr><td><code>zh-TW</code></td><td>Traditional Chinese</td><td>中国台湾, 中国香港</td><td>No</td><td>1 form (no plural)</td></tr>
+      <tr><td><code>th</code></td><td>Thai</td><td>Thailand</td><td>No</td><td>1 form (no plural)</td></tr>
+      <tr><td><code>vi</code></td><td>Vietnamese</td><td>Vietnam</td><td>No</td><td>1 form (no plural)</td></tr>
+      <tr><td><code>de</code></td><td>German</td><td>Germany, Austria</td><td>No</td><td>2 forms (one/other)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <strong>Critical:</strong> Do NOT use machine translation for production listings. Every locale needs <span class="highlight">native-speaker review</span>. Japanese and German especially — machine-translated UI copy in these markets destroys trust immediately.
+  </div>
+
+  <!-- Section 4: Payment -->
+  <h2 id="s4">4. Payment Architecture</h2>
+
+  <h3>4.1 Recommended: Stripe (Primary)</h3>
+
+  <table>
+    <thead><tr><th>Feature</th><th>Stripe</th><th>PayPal</th><th>Local (Region)</th></tr></thead>
+    <tbody>
+      <tr><td>Coverage</td><td>46+ countries</td><td>200+ countries</td><td>Market-specific</td></tr>
+      <tr><td>Recurring billing</td><td class="badge badge-green">Native</td><td class="badge badge-amber">Limited</td><td class="badge badge-red">Varies</td></tr>
+      <tr><td>Multi-currency</td><td class="badge badge-green">135+ currencies</td><td class="badge badge-green">25+ currencies</td><td>Single currency</td></tr>
+      <tr><td>Tax handling</td><td class="badge badge-green">Stripe Tax (auto)</td><td>Manual</td><td>Manual</td></tr>
+      <tr><td>Developer API</td><td class="badge badge-green">Excellent</td><td class="badge badge-amber">Good</td><td>Varies</td></tr>
+      <tr><td>Payout speed</td><td>2-7 days</td><td>1-3 days</td><td>Varies</td></tr>
+      <tr><td>Fee (US)</td><td>2.9% + $0.30</td><td>2.9% + $0.30</td><td>1-3%</td></tr>
+      <tr><td>Fee (JP)</td><td>3.6% + JPY 40</td><td>3.4% + JPY 40</td><td>1.5-2.5%</td></tr>
+      <tr><td>Fee (SEA)</td><td>3-4% + local equiv</td><td>3-4%</td><td>1-2%</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.2 Payment Flow Architecture</h3>
+
+  <div class="card">
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1rem;">
+      <div>
+        <span class="badge badge-accent">Step 1: Checkout</span>
+        <p style="font-size:0.8rem; color:var(--text2); margin-top:0.3rem;">User selects tier → Stripe Checkout creates session with locale + currency + tax</p>
+      </div>
+      <div>
+        <span class="badge badge-teal">Step 2: Payment</span>
+        <p style="font-size:0.8rem; color:var(--text2); margin-top:0.3rem;">Stripe Elements embedded or hosted checkout page. Supports Apple Pay, Google Pay, ACH</p>
+      </div>
+      <div>
+        <span class="badge badge-coral">Step 3: Webhook</span>
+        <p style="font-size:0.8rem; color:var(--text2); margin-top:0.3rem;">stripe webhook → backend creates/updates subscription → sends confirmation email</p>
+      </div>
+      <div>
+        <span class="badge badge-green">Step 4: Portal</span>
+        <p style="font-size:0.8rem; color:var(--text2); margin-top:0.3rem;">Stripe Customer Portal for self-service upgrades/downgrades/cancellations</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>4.3 Regional Payment Strategy</h3>
+  <table>
+    <thead><tr><th>Region</th><th>Primary Gateway</th><th>Local Methods</th><th>When to Add</th></tr></thead>
+    <tbody>
+      <tr><td>North America</td><td>Stripe</td><td>Apple Pay, Google Pay, ACH</td><td>Day 1</td></tr>
+      <tr><td>Japan</td><td>Stripe JP</td><td>PayPay, LINE Pay (via Stripe)</td><td>Day 1</td></tr>
+      <tr><td>Southeast Asia</td><td>Stripe</td><td>GrabPay, GCash, OVO (via Stripe)</td><td>Phase 2</td></tr>
+      <tr><td>Europe</td><td>Stripe</td><td>SOFORT, iDEAL, Bancontact</td><td>Phase 2</td></tr>
+      <tr><td>India</td><td>Razorpay</td><td>UPI, Paytm, NetBanking</td><td>Phase 3</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Stripe advantage:</strong> Single integration supports 135+ currencies and dozens of local payment methods. No need for separate payment gateway per market until you reach scale that justifies direct bank integrations for lower fees.
+  </div>
+
+  <!-- Section 5: Localization -->
+  <h2 id="s5">5. Localization Strategy</h2>
+
+  <h3>5.1 What Needs Localization</h3>
+  <table>
+    <thead><tr><th>Layer</th><th>Content</th><th>Priority</th><th>Effort</th></tr></thead>
+    <tbody>
+      <tr><td>UI strings</td><td>Buttons, labels, nav, error messages</td><td class="badge badge-red">P0</td><td>~200 strings, 2 days/loc</td></tr>
+      <tr><td>Pricing page</td><td>Tier names, descriptions, currency symbols</td><td class="badge badge-red">P0</td><td>~50 strings, 0.5 days/loc</td></tr>
+      <tr><td>Email templates</td><td>Welcome, receipt, password reset</td><td class="badge badge-coral">P1</td><td>~15 templates, 1 day/loc</td></tr>
+      <tr><td>SEO meta</td><td>Title, description, keywords per page</td><td class="badge badge-coral">P1</td><td>~30 strings, 0.5 day/loc</td></tr>
+      <tr><td>Legal docs</td><td>Terms, Privacy Policy, Cookie Policy</td><td class="badge badge-amber">P2</td><td>Must use local counsel</td></tr>
+      <tr><td>Marketing copy</td><td>Landing page, blog, social</td><td class="badge badge-amber">P2</td><td>Native copywriter required</td></tr>
+      <tr><td>AI prompts</td><td>Match algorithm language preference</td><td class="badge badge-teal">P1</td><td>Backend i18n of prompt templates</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.2 Cultural Adaptation Notes</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="badge badge-accent">Japan</span>
+      <ul style="font-size:0.8rem; color:var(--text2); margin-top:0.5rem; padding-left:1rem;">
+        <li>Keigo (polite language) in all UI copy</li>
+        <li>Subscription = "定期課金" not literal translation</li>
+        <li>Job matching: include "面接準備" (interview prep) as feature</li>
+        <li>Privacy: explicit opt-in for all data usage</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge badge-teal">Southeast Asia</span>
+      <ul style="font-size:0.8rem; color:var(--text2); margin-top:0.5rem; padding-left:1rem;">
+        <li>Mobile-first design (80%+ mobile traffic)</li>
+        <li>Lower price points: ¥29-99 equivalent</li>
+        <li>Social login (Google, LINE) > email auth</li>
+        <li>Referral / friend-invite features critical</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge badge-coral">Germany/EU</span>
+      <ul style="font-size:0.8rem; color:var(--text2); margin-top:0.5rem; padding-left:1rem;">
+        <li>GDPR: cookie consent banner mandatory</li>
+        <li>Imprint (Impressum) page required</li>
+        <li>"Lebenslauf" instead of "resume"</li>
+        <li>Invoice (Rechnung) for B2B customers</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 6: Infrastructure -->
+  <h2 id="s6">6. Infrastructure & Digital Delivery</h2>
+
+  <p>For a SaaS product, "logistics" = <strong>digital delivery infrastructure</strong>. No physical shipping needed for core product, but if expanding to physical goods (see Section 8), see the e-commerce extension plan.</p>
+
+  <h3>6.1 Recommended Architecture</h3>
+
+  <div class="card">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+      <div>
+        <h4 style="font-size:0.85rem; margin-bottom:0.5rem;">Frontend</h4>
+        <ul style="font-size:0.8rem; color:var(--text2); padding-left:1rem;">
+          <li>Next.js 15 (App Router) + TypeScript</li>
+          <li>Vercel Edge Network (auto geo-distribution)</li>
+          <li>Middleware: locale detection + auth guard</li>
+          <li>ISR for marketing pages</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:0.85rem; margin-bottom:0.5rem;">Backend</h4>
+        <ul style="font-size:0.8rem; color:var(--text2); padding-left:1rem;">
+          <li>API on Railway / Fly.io (multi-region)</li>
+          <li>PostgreSQL (Neon / Supabase)</li>
+          <li>Redis (Upstash) for session + rate limit</li>
+          <li>DeepSeek API for AI inference</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>6.2 CDN & Performance</h3>
+  <table>
+    <thead><tr><th>Layer</th><th>Solution</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Static assets</td><td>Vercel CDN (built-in)</td><td>Automatic edge caching, zero config</td></tr>
+      <tr><td>API response</td><td>Cloudflare or Vercel Edge Middleware</td><td>Cache region pricing, locale strings</td></tr>
+      <tr><td>AI responses</td><td>Streaming (SSE) + no cache</td><td>Real-time generation, can't cache</td></tr>
+      <tr><td>Images</td><td>Cloudinary or Vercel Image Optimization</td><td>Responsive images per locale/device</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <strong>Backend stability:</strong> Current Cloudflare Tunnel URL is <span class="highlight">ephemeral</span> (changes on restart). Must migrate to a stable domain (e.g., <code>api.tatha.ai</code>) before any production launch. Use Cloudflare Tunnel with a fixed hostname or a proper reverse proxy (nginx/Caddy).
+  </div>
+
+  <!-- Section 7: Compliance -->
+  <h2 id="s7">7. Compliance & Legal</h2>
+
+  <table>
+    <thead><tr><th>Requirement</th><th>Region</th><th>What to Do</th><th>Deadline</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="badge badge-red">GDPR</td>
+        <td>EU/EEA</td>
+        <td>Cookie consent, data portability, right to deletion, DPO, DPIA</td>
+        <td>Before EU launch</td>
+      </tr>
+      <tr>
+        <td class="badge badge-coral">CCPA</td>
+        <td>California, US</td>
+        <td>Privacy policy, opt-out link, data disclosure on request</td>
+        <td>Before US launch</td>
+      </tr>
+      <tr>
+        <td class="badge badge-coral">APPI</td>
+        <td>Japan</td>
+        <td>Data handling policy, consent for cross-border transfer, named DPO</td>
+        <td>Before JP launch</td>
+      </tr>
+      <tr>
+        <td class="badge badge-amber">SOC 2 Type I</td>
+        <td>US (enterprise)</td>
+        <td>Access controls, encryption, monitoring, audit logs</td>
+        <td>Phase 2 (enterprise customers)</td>
+      </tr>
+      <tr>
+        <td class="badge badge-amber">Terms of Service</td>
+        <td>All</td>
+        <td>Per-jurisdiction ToS + refund policy + SLA</td>
+        <td>Before any launch</td>
+      </tr>
+      <tr>
+        <td class="badge badge-teal">PCI DSS</td>
+        <td>All (card payments)</td>
+        <td>Using Stripe Checkout = SAQ A (lightest compliance)</td>
+        <td>Day 1 (Stripe handles most)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Good news:</strong> Using Stripe Checkout (redirect to Stripe-hosted page) means you qualify for <span class="highlight">SAQ A</span> — the simplest PCI DSS self-assessment. You never touch raw card data.
+  </div>
+
+  <!-- Section 8: Platform Decision -->
+  <h2 id="s8">8. Platform Decision: Shopify vs SaaS-Native</h2>
+
+  <p>During planning, the team evaluated <strong>Shopify</strong> as a potential platform for Tatha's international expansion. This section documents the analysis and final decision.</p>
+
+  <h3>8.1 Why Shopify Was Considered</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="badge badge-accent">Multi-market presence</span>
+      <p style="margin-top:0.3rem; font-size:0.85rem; color:var(--text2);">Shopify powers 4.8M+ stores globally across 175+ countries. Well-known brand reduces buyer hesitation.</p>
+    </div>
+    <div class="card">
+      <span class="badge badge-teal">Built-in payments</span>
+      <p style="margin-top:0.3rem; font-size:0.85rem; color:var(--text2);">Shopify Payments supports 135+ currencies with integrated tax calculation. Single dashboard for all markets.</p>
+    </div>
+    <div class="card">
+      <span class="badge badge-coral">Quick setup</span>
+      <p style="margin-top:0.3rem; font-size:0.85rem; color:var(--text2);">Templates and drag-and-drop builder can get a store live in days. Low technical barrier to entry.</p>
+    </div>
+  </div>
+
+  <h3>8.2 Core Problem: Product vs Service Model Mismatch</h3>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Feature Fit Analysis — Shopify vs Tatha Requirements</div>
+    <table>
+      <thead>
+        <tr><th>Requirement</th><th>Tatha Needs</th><th>Shopify Provides</th><th>Fit</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Subscription management (recurring billing)</td>
+          <td><strong>Core</strong> — monthly/annual plans, usage tiers, proration</td>
+          <td>Limited — Shopify Subscriptions API designed for physical product replenishment (e.g. "coffee of the month"), not SaaS tiers with feature gating</td>
+          <td class="badge badge-red">No</td>
+        </tr>
+        <tr>
+          <td>User authentication + authorization</td>
+          <td><strong>Core</strong> — login, register, social OAuth (Google/GitHub/LINE), RBAC per plan</td>
+          <td>Shopify accounts are customer accounts for checkout, not user accounts for SaaS access. No RBAC, no feature gating.</td>
+          <td class="badge badge-red">No</td>
+        </tr>
+        <tr>
+          <td>API-driven AI interactions</td>
+          <td><strong>Core</strong> — real-time AI inference (resume parsing, job matching, MBTI), streaming responses</td>
+          <td>No server-side logic. Shopify is a storefront, not an application platform. No WebSocket/SSE support for streaming AI.</td>
+          <td class="badge badge-red">No</td>
+        </tr>
+        <tr>
+          <td>Usage metering + feature gating</td>
+          <td><strong>Core</strong> — "3 free AI analyses per day for Basic", "unlimited for Pro"</td>
+          <td>Shopify tracks inventory and orders, not API call counts or usage quotas. No feature flagging system.</td>
+          <td class="badge badge-red">No</td>
+        </tr>
+        <tr>
+          <td>Product catalog management</td>
+          <td><strong>Not needed</strong> — Tatha has no SKUs, no variants, no physical inventory</td>
+          <td>Core strength — SKU management, variants, inventory tracking</td>
+          <td class="badge badge-amber">Irrelevant</td>
+        </tr>
+        <tr>
+          <td>Shopping cart + checkout</td>
+          <td><strong>Not needed</strong> — Users subscribe to a tier, not add items to cart</td>
+          <td>Core strength — multi-item cart, discount codes, gift cards</td>
+          <td class="badge badge-amber">Irrelevant</td>
+        </tr>
+        <tr>
+          <td>Shipping / fulfillment</td>
+          <td><strong>Not needed</strong> — Pure digital delivery, no physical goods</td>
+          <td>Core strength — carrier integration, tracking, multi-warehouse</td>
+          <td class="badge badge-amber">Irrelevant</td>
+        </tr>
+        <tr>
+          <td>Multi-currency + local payment</td>
+          <td><strong>Needed</strong> — 135+ currencies, regional payment methods</td>
+          <td>Supported via Shopify Payments — but only within Shopify's checkout flow</td>
+          <td class="badge badge-coral">Partial</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="warn-box">
+    <strong>Verdict:</strong> Shopify solves <span class="highlight">zero</span> of Tatha's core SaaS requirements (subscription management, auth, AI integration, feature gating). The 3 features Shopify excels at (product catalog, cart, shipping) are <span class="highlight">completely irrelevant</span> to Tatha's business model. Forcing Tatha onto Shopify would require building custom apps for every core feature, essentially fighting the platform instead of leveraging it.
+  </div>
+
+  <h3>8.3 Detailed Comparison: Total Cost of Ownership</h3>
+
+  <table>
+    <thead><tr><th>Dimension</th><th>Shopify (forced fit)</th><th>SaaS-native (Stripe + Supabase + Next.js)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Monthly platform cost</td>
+        <td>$79/mo (Basic) ~ $2,399/mo (Advanced)</td>
+        <td>$0 (Supabase free) ~ $25/mo (Pro) + Vercel (free hobby)</td>
+      </tr>
+      <tr>
+        <td>Transaction fee</td>
+        <td>2.0-2.5% + payment gateway (if not Shopify Payments)</td>
+        <td>2.9% + $0.30 (Stripe, no platform surcharge)</td>
+      </tr>
+      <tr>
+        <td>Custom app development</td>
+        <td class="badge badge-red">Required for ALL core features: subscription logic, auth, AI integration, feature gating</td>
+        <td class="badge badge-green">Native support: Stripe Billing handles subscriptions, Supabase handles auth, custom API handles AI</td>
+      </tr>
+      <tr>
+        <td>Data ownership</td>
+        <td>Customer data stored on Shopify's servers. Limited API access for analytics.</td>
+        <td class="badge badge-green">Full ownership. PostgreSQL database you control. Direct API access.</td>
+      </tr>
+      <tr>
+        <td>Flexibility</td>
+        <td>Liquid templates + custom apps. Constrained by Shopify's architecture.</td>
+        <td class="badge badge-green">Full-stack control. Any UI, any logic, any integration.</td>
+      </tr>
+      <tr>
+        <td>SEO control</td>
+        <td>Limited — Shopify generates canonical URLs, meta tags with limited customization</td>
+        <td class="badge badge-green">Full control via Next.js SSR/SSG + meta tags + structured data</td>
+      </tr>
+      <tr>
+        <td>Development speed</td>
+        <td>Fast for stores, <span class="badge badge-red">very slow</span> for SaaS features (months of workaround development)</td>
+        <td>Fast for SaaS — purpose-built tools, extensive documentation, large ecosystem</td>
+      </tr>
+      <tr>
+        <td>Vendor lock-in risk</td>
+        <td class="badge badge-red">High — entire business logic depends on Shopify's API and platform rules</td>
+        <td class="badge badge-green">Low — standard web stack, portable between any cloud provider</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>8.4 When Shopify Would Be Appropriate</h3>
+  <p>Shopify is not wrong for all Tatha-related projects. Here are scenarios where it <em>would</em> fit:</p>
+
+  <table>
+    <thead><tr><th>Scenario</th><th>Fit</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Physical merch store</strong> (T-shirts, planners, career books)</td>
+        <td class="badge badge-green">Good fit</td>
+        <td>If Tatha brand grows and wants to sell career-related physical products, Shopify is the right tool. But this is a Phase 3 side business, not the core.</td>
+      </tr>
+      <tr>
+        <td><strong>One-time digital downloads</strong> (PDF resume templates)</td>
+        <td class="badge badge-coral">Possible</td>
+        <td>Shopify can sell digital downloads. But Gumroad or LemonSqueezy are lighter-weight for this. Or just sell via Stripe Payment Links.</td>
+      </tr>
+      <tr>
+        <td><strong>Brand landing page / marketing site</strong></td>
+        <td class="badge badge-amber">Overkill</td>
+        <td>Next.js + Vercel is more flexible, faster, and cheaper for a marketing site. No need for Shopify's commerce overhead.</td>
+      </tr>
+      <tr>
+        <td><strong>Tatha core SaaS product</strong> (AI resume + job matching + MBTI)</td>
+        <td class="badge badge-red">Wrong tool</td>
+        <td>Not designed for subscription SaaS with AI features, auth, and usage metering.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>8.5 Decision Matrix Score</h3>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Platform Fit Scoring (1-10, 10 = perfect fit)</div>
+    <canvas id="chart-platform" height="300" role="img" aria-label="Radar chart comparing Shopify and SaaS-native platform fit"></canvas>
+  </div>
+
+  <div class="tip-box">
+    <strong>Final decision:</strong> <span class="highlight">SaaS-native stack (Next.js + Stripe + Supabase)</span> wins decisively with 8.9/10 vs Shopify's 3.4/10. Shopify is the right answer for product commerce, but Tatha is a subscription SaaS product. The two models require fundamentally different infrastructure.
+    <br><br>
+    <strong>Bookmark for later:</strong> If Tatha expands into physical merch or one-time digital downloads in Phase 3, revisit Shopify (or Printful API directly) for that specific use case — but never for the core SaaS product.
+  </div>
+
+  <!-- Section 9: E-Commerce Extension -->
+  <h2 id="s9">9. Cross-Border E-Commerce Extension</h2>
+
+  <p>While Tatha's core is SaaS, there's a natural extension into <strong>digital products</strong> and potentially <strong>physical goods</strong>:</p>
+
+  <h3>9.1 Digital Products (Phase 2)</h3>
+  <div class="card-grid">
+    <div class="card">
+      <span class="badge badge-teal">Resume Templates</span>
+      <p style="font-size:0.8rem; color:var(--text2); margin-top:0.3rem;">AI-generated resume templates per industry/region. One-time purchase or bundle with subscription.</p>
+    </div>
+    <div class="card">
+      <span class="badge badge-teal">Interview Prep Kits</span>
+      <p style="font-size:0.8rem; color:var(--text2); margin-top:0.3rem;">Industry-specific mock interview Q&A, video analysis, practice sessions.</p>
+    </div>
+    <div class="card">
+      <span class="badge badge-teal">Career Courses</span>
+      <p style="font-size:0.8rem; color:var(--text2); margin-top:0.3rem;">Video courses on job hunting, salary negotiation, LinkedIn optimization.</p>
+    </div>
+  </div>
+
+  <h3>9.2 Physical Goods (Phase 3 - Optional)</h3>
+  <p>If expanding to physical career-related products (books, planners, merch):</p>
+
+  <table>
+    <thead><tr><th>Model</th><th>How It Works</th><th>Best For</th><th>Margin</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Print-on-Demand</strong></td>
+        <td>Partner: Printful / Printify. No inventory risk.</td>
+        <td>Merch, books, planners</td>
+        <td>15-30%</td>
+      </tr>
+      <tr>
+        <td><strong>Amazon FBA</strong></td>
+        <td>Ship inventory to Amazon warehouse.</td>
+        <td>Bestseller career books</td>
+        <td>20-40%</td>
+      </tr>
+      <tr>
+        <td><strong>Dropshipping</strong></td>
+        <td>Third-party warehouse ships direct to buyer.</td>
+        <td>Low-volume, diversified SKUs</td>
+        <td>10-25%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>Recommendation:</strong> Start with <span class="highlight">digital products only</span> (zero logistics). Add Print-on-Demand for merch only after brand is established. Full physical goods e-commerce is Phase 3 at earliest.
+  </div>
+
+  <!-- Section 10: GTM Phasing -->
+  <h2 id="s10">10. Go-to-Market Phasing</h2>
+
+  <div class="phase-row">
+    <div>
+      <div class="phase-num" style="background:var(--accent-bg); color:var(--accent);">1</div>
+    </div>
+    <div class="phase-content">
+      <h4>Foundation <span class="badge badge-accent">Week 1-4</span></h4>
+      <p>Migrate to Next.js, implement Stripe Checkout, basic i18n (en + zh-CN), production auth (Supabase), stable API domain</p>
+    </div>
+    <div class="phase-detail">
+      <ul>
+        <li>Next.js + next-intl setup</li>
+        <li>Stripe Checkout integration</li>
+        <li>Supabase Auth + PostgreSQL</li>
+        <li>Domain: tatha.ai</li>
+        <li>EN + zh-CN locale</li>
+      </ul>
+    </div>
+    <div class="phase-detail">
+      <ul style="color:var(--green);">
+        <li>Deliverable: Production-ready English + Chinese site</li>
+        <li>Metric: First paying customer</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-row">
+    <div>
+      <div class="phase-num" style="background:var(--teal-bg); color:var(--teal);">2</div>
+    </div>
+    <div class="phase-content">
+      <h4>NA Expansion <span class="badge badge-teal">Month 2-3</span></h4>
+      <p>US market launch: SEO, content marketing, Reddit/HN communities, beta testers, product hunt</p>
+    </div>
+    <div class="phase-detail">
+      <ul>
+        <li>Job board partnerships (Indeed, LinkedIn API)</li>
+        <li>Content: "AI Resume Tips" blog series</li>
+        <li>Social: Twitter/X + Reddit r/jobs</li>
+        <li>Referral program launch</li>
+        <li>CCPA compliance</li>
+      </ul>
+    </div>
+    <div class="phase-detail">
+      <ul style="color:var(--teal);">
+        <li>Deliverable: 100+ MAU in US</li>
+        <li>Metric: 5% conversion to paid</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-row">
+    <div>
+      <div class="phase-num" style="background:var(--coral-bg); color:var(--coral);">3</div>
+    </div>
+    <div class="phase-content">
+      <h4>APAC Expansion <span class="badge badge-coral">Month 4-6</span></h4>
+      <p>Japan + SEA launch: local payment methods, localized AI prompts, partnership with local job platforms</p>
+    </div>
+    <div class="phase-detail">
+      <ul>
+        <li>Japanese locale + native speaker review</li>
+        <li>Stripe JP activation</li>
+        <li>LINE Login integration</li>
+        <li>Job matching for JP/TH/VI markets</li>
+        <li>APPI compliance</li>
+      </ul>
+    </div>
+    <div class="phase-detail">
+      <ul style="color:var(--coral);">
+        <li>Deliverable: 3-locale site (EN/JA/ZH)</li>
+        <li>Metric: 500+ total users, 2+ markets</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-row">
+    <div>
+      <div class="phase-num" style="background:var(--amber-bg); color:var(--amber);">4</div>
+    </div>
+    <div class="phase-content">
+      <h4>Europe + Scale <span class="badge badge-amber">Month 7-12</span></h4>
+      <p>EU launch with full GDPR compliance, German locale, digital products, enterprise tier</p>
+    </div>
+    <div class="phase-detail">
+      <ul>
+        <li>GDPR full compliance</li>
+        <li>DE locale + Impressum</li>
+        <li>Resume template marketplace</li>
+        <li>Enterprise SSO (SAML/OIDC)</li>
+        <li>SOC 2 Type I audit</li>
+      </ul>
+    </div>
+    <div class="phase-detail">
+      <ul style="color:var(--amber);">
+        <li>Deliverable: EU GA + digital products</li>
+        <li>Metric: $10K MRR</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 11: Pricing -->
+  <h2 id="s11">11. Cost Model & Pricing</h2>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Suggested Pricing by Region (USD equivalent / month)</div>
+    <canvas id="chart-pricing" height="240" role="img" aria-label="Grouped bar chart of pricing tiers by region"></canvas>
+  </div>
+
+  <h3>11.1 Per-Region Pricing Matrix</h3>
+  <table>
+    <thead><tr><th>Tier</th><th>China (¥)</th><th>US ($)</th><th>Japan (JPY)</th><th>SEA ($)</th><th>EU (EUR)</th></tr></thead>
+    <tbody>
+      <tr><td>Free</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>Basic</td><td>99</td><td>9.99</td><td>1,480</td><td>5.99</td><td>8.99</td></tr>
+      <tr><td>Pro</td><td>299</td><td>29.99</td><td>4,400</td><td>14.99</td><td>24.99</td></tr>
+    </tbody>
+  </table>
+
+  <h3>11.2 Unit Economics (US Market)</h3>
+  <table>
+    <thead><tr><th>Cost Item</th><th>Basic ($9.99/mo)</th><th>Pro ($29.99/mo)</th></tr></thead>
+    <tbody>
+      <tr><td>Stripe fee (2.9%+$0.30)</td><td>$0.59</td><td>$1.17</td></tr>
+      <tr><td>AI inference (DeepSeek / Claude)</td><td>$0.50</td><td>$2.00</td></tr>
+      <tr><td>Infrastructure (Vercel + DB)</td><td>$0.15</td><td>$0.15</td></tr>
+      <tr><td>Email (Resend)</td><td>$0.02</td><td>$0.02</td></tr>
+      <tr><td><strong>COGS</strong></td><td><strong>$1.26</strong></td><td><strong>$3.34</strong></td></tr>
+      <tr><td><strong>Gross Margin</strong></td><td><strong>87.4%</strong></td><td><strong>88.9%</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>SaaS advantage:</strong> SaaS gross margins of 85-90% are typical and far better than physical e-commerce (20-35%). The main cost driver is AI inference, which scales sub-linearly with user growth.
+  </div>
+
+  <!-- Section 12: Risk Matrix -->
+  <h2 id="s12">12. Risk Matrix</h2>
+
+  <table>
+    <thead><tr><th>Risk</th><th>Impact</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="badge badge-red">API instability (Cloudflare Tunnel)</td>
+        <td>Critical</td>
+        <td>High</td>
+        <td>Migrate to stable domain Day 1</td>
+      </tr>
+      <tr>
+        <td class="badge badge-red">GDPR non-compliance</td>
+        <td>Critical</td>
+        <td>Medium</td>
+        <td>Engage EU privacy counsel before EU launch</td>
+      </tr>
+      <tr>
+        <td class="badge badge-coral">Low conversion in new markets</td>
+        <td>High</td>
+        <td>Medium</td>
+        <td>Soft-launch with beta testers, iterate pricing</td>
+      </tr>
+      <tr>
+        <td class="badge badge-coral">AI prompt localization quality</td>
+        <td>Medium</td>
+        <td>High</td>
+        <td>Native speaker review per locale; A/B test</td>
+      </tr>
+      <tr>
+        <td class="badge badge-amber">FX fluctuation eroding margins</td>
+        <td>Medium</td>
+        <td>Medium</td>
+        <td>Stripe multi-currency pricing; quarterly adjustment</td>
+      </tr>
+      <tr>
+        <td class="badge badge-amber">Competitor (LinkedIn AI, etc.)</td>
+        <td>High</td>
+        <td>Medium</td>
+        <td>Differentiate on niche (poetry + career), speed, UX</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Section 13: Action Items -->
+  <h2 id="s13">13. Immediate Action Items</h2>
+
+  <div class="card" style="border-color: var(--accent);">
+    <h4 style="font-size:0.95rem; margin-bottom:1rem;">Week 1 Priorities</h4>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+      <div style="font-size:0.85rem;">
+        <div style="margin-bottom:0.75rem;">
+          <span class="badge badge-red">P0</span>
+          <strong> Migrate to Next.js + TypeScript</strong>
+          <p style="color:var(--text3); font-size:0.78rem; margin-top:0.15rem;">Current static HTML can't support i18n or auth properly. Next.js App Router is the right foundation.</p>
+        </div>
+        <div style="margin-bottom:0.75rem;">
+          <span class="badge badge-red">P0</span>
+          <strong> Stable API domain</strong>
+          <p style="color:var(--text3); font-size:0.78rem; margin-top:0.15rem;">Replace ephemeral Cloudflare Tunnel URL with api.tatha.ai. Use Caddy or nginx reverse proxy.</p>
+        </div>
+        <div>
+          <span class="badge badge-red">P0</span>
+          <strong> Production auth (Supabase)</strong>
+          <p style="color:var(--text3); font-size:0.78rem; margin-top:0.15rem;">Replace demo auth with Supabase Auth. Supports email, OAuth, magic links. Free tier is generous.</p>
+        </div>
+      </div>
+      <div style="font-size:0.85rem;">
+        <div style="margin-bottom:0.75rem;">
+          <span class="badge badge-coral">P0</span>
+          <strong> Stripe Checkout integration</strong>
+          <p style="color:var(--text3); font-size:0.78rem; margin-top:0.15rem;">Stripe Checkout for subscriptions. Start with USD. Test mode first, then live with US bank account.</p>
+        </div>
+        <div style="margin-bottom:0.75rem;">
+          <span class="badge badge-teal">P1</span>
+          <strong> English locale (next-intl)</strong>
+          <p style="color:var(--text3); font-size:0.78rem; margin-top:0.15rem;">Extract all Chinese strings to message catalogs. Create English translations. Native speaker review.</p>
+        </div>
+        <div>
+          <span class="badge badge-teal">P1</span>
+          <strong> Privacy Policy + ToS</strong>
+          <p style="color:var(--text3); font-size:0.78rem; margin-top:0.15rem;">Draft with template service (Termly / iubenda). Have a lawyer review before any paid user.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); text-align:center;">
+    <p style="color:var(--text3); font-size:0.8rem;">Tatha Cross-Border Strategy v1.1 | Updated 2026-05-30 | Confidential</p>
+  </div>
+</div>
+
+<script>
+// Chart 1: TAM by Region
+new Chart(document.getElementById('chart-tam'), {
+  type: 'bar',
+  data: {
+    labels: ['North America', 'Europe', 'Japan', 'Southeast Asia', 'India', 'China'],
+    datasets: [{
+      label: 'TAM ($M)',
+      data: [4200, 3100, 1800, 2200, 2600, 3500],
+      backgroundColor: [
+        'rgba(99,102,241,0.7)',
+        'rgba(129,140,248,0.5)',
+        'rgba(45,212,191,0.7)',
+        'rgba(249,115,22,0.7)',
+        'rgba(245,158,11,0.5)',
+        'rgba(107,107,128,0.5)'
+      ],
+      borderRadius: 4,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) { return '$' + ctx.raw.toLocaleString() + 'M'; }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        ticks: { color: '#6b6b80', callback: function(v) { return '$' + v/1000 + 'B'; } }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#6b6b80', maxRotation: 45 }
+      }
+    }
+  }
+});
+
+// Chart: Platform Fit Radar
+new Chart(document.getElementById('chart-platform'), {
+  type: 'radar',
+  data: {
+    labels: ['Subscription Mgmt', 'User Auth / RBAC', 'AI Integration', 'Feature Gating', 'Multi-currency', 'SEO Control', 'Flexibility', 'Data Ownership', 'Cost Efficiency'],
+    datasets: [
+      {
+        label: 'SaaS-native (Stripe + Supabase + Next.js)',
+        data: [9.5, 9, 9.5, 9, 9, 9, 9.5, 9, 8.5],
+        borderColor: 'rgba(45,212,191,0.9)',
+        backgroundColor: 'rgba(45,212,191,0.15)',
+        pointBackgroundColor: 'rgba(45,212,191,1)',
+        pointRadius: 3,
+        borderWidth: 2,
+      },
+      {
+        label: 'Shopify',
+        data: [2, 1, 1, 1, 7, 4, 3, 3, 5],
+        borderColor: 'rgba(249,115,22,0.9)',
+        backgroundColor: 'rgba(249,115,22,0.1)',
+        pointBackgroundColor: 'rgba(249,115,22,1)',
+        pointRadius: 3,
+        borderWidth: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: { color: '#a0a0b4', boxWidth: 12, padding: 12, font: { size: 11 } }
+      }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 10,
+        ticks: { display: false },
+        grid: { color: 'rgba(255,255,255,0.08)' },
+        pointLabels: { color: '#a0a0b4', font: { size: 10 } },
+        angleLines: { color: 'rgba(255,255,255,0.06)' }
+      }
+    }
+  }
+});
+
+// Chart 2: Pricing comparison
+new Chart(document.getElementById('chart-pricing'), {
+  type: 'bar',
+  data: {
+    labels: ['China', 'US', 'Japan', 'SEA', 'EU'],
+    datasets: [
+      {
+        label: 'Basic',
+        data: [99/7.2, 9.99, 1480/150, 5.99, 8.99],
+        backgroundColor: 'rgba(99,102,241,0.7)',
+        borderRadius: 3,
+        borderSkipped: false,
+      },
+      {
+        label: 'Pro',
+        data: [299/7.2, 29.99, 4400/150, 14.99, 24.99],
+        backgroundColor: 'rgba(45,212,191,0.7)',
+        borderRadius: 3,
+        borderSkipped: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        labels: { color: '#6b6b80', boxWidth: 12, padding: 16 }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) { return ctx.dataset.label + ': $' + ctx.raw.toFixed(2) + '/mo'; }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        ticks: { color: '#6b6b80', callback: function(v) { return '$' + v; } }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#6b6b80' }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
